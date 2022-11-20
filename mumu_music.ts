@@ -99,7 +99,6 @@ var guqin_grid_notes = [
                   [12,0,2,5,7,9,12,14]
                   ];
 
-
 /*
 To select chord progressions that sound good, select from any 6 adjacent cells. To modulate keys safely, rotate 6 adjacent cells along the x cells 
 The further the distance between cell sets (max-distance = 6), the more distant the chords harmonically. 
@@ -116,7 +115,6 @@ const chord_map = [
                   [0,7,2,9,4,11,6,1,8,3,10,5], //major modes/chords
                   [9,4,11,6,1,8,3,10,5,0,7,2],      //minor modes/chords 
                   ] as const;
-
 
 //Function picks 1 of the 12 possible 6 chords to choose
 
@@ -148,7 +146,6 @@ export function get_chords_at_idx(idx: number) {
 // Modal Transposition - Moving up or down in pitch by a constant interval within a given mode
 // Scale Degree - The position of a particular note on a scale relative to the tonic
 //*****************************************************************************************************************
-
 
 class PitchClass {
   note: number;
