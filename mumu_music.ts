@@ -1,7 +1,7 @@
 // Define a 12 note octave base
 // For Microtonal mode definition, change the OCTAVEBASE and represent scales as intervallic ratios summing to OCTAVEBASE
 
-const octavebase:number = 12 
+export const octavebase:number = 12; 
 
 /*********************************************************************************************
 //  Mode & Key Definitions
@@ -22,7 +22,9 @@ const octavebase:number = 12
  Lydian, Pentatonic and Dorian would be great choices
 */
 
-const major_steps = [2,2,1,2,2,2,1] as const; //avoid notes scale degree 3
+//const major_steps = [2,2,1,2,2,2,1] as const; //avoid notes scale degree 3
+export var major_steps = [2,2,1,2,2,2,1]; //avoid notes scale degree 3
+
 const mixolydian_steps = [2,2,1,2,2,1,2] as const; //avoid notes scale degree 3
 const dorian_steps = [2,1,2,2,2,1,2] as const; //avoid notes scale degree 5 but modern ears usually like it
 const aeolian_steps = [2,1,2,2,2,2,2] as const; // avoid notes scale degree 5
@@ -67,7 +69,14 @@ const mode_steps = [
                   chromatic_steps,
                   pentatonic_steps
                   ] as const;
-              
+
+                  
+
+                  type ModeMap = {[key: string]: number[]};
+
+                  
+
+
 /*
 Modes sorted by lighter to dark quality:
 https://guitarchitecture.org/2011/10/02/the-guitarchitect%E2%80%99s-guide-to-modes-part-the-circle-of-5ths-modal-interchange-and-making-the-most-of-one-pattern/
@@ -102,13 +111,10 @@ var guqin_grid_notes = [
 /*
 To select chord progressions that sound good, select from any 6 adjacent cells of the chord_map below. To modulate keys safely, rotate 6 adjacent cells along the cells columns. 
 The further the distance between cell sets (max-distance = 6), the more distant the chords harmonically.
-
 There are also modal chord changes that also sound good (in the audio demo 0, I modulated down modally by 2 steps)
-
 Applying this to formulas, chord changes could occur when a clover occurs, while possible modulations to different 
 keys could occur when a smash or steam events occur. This follows the sequential nature of the formulas as each provides the harmonic context for the next. 
 Put another way - The ear needs to traverse a harmonic space to build contexts for modulations to other spaces to occur. 		
-
 more info at: https://ledgernote.com/columns/music-theory/circle-of-fifths-explained/
 */
 
@@ -148,7 +154,7 @@ export function get_chords_at_idx(idx: number) {
 // Scale Degree - The position of a particular note on a scale relative to the tonic
 //*****************************************************************************************************************
 
-class PitchClass {
+export class PitchClass {
   note: number;
   octave: number;
 
@@ -160,7 +166,7 @@ class PitchClass {
   // Converts a PitchClass to a MIDI keynum
 
   pcToKeynum() : number {
-      return this.note*(octavebase * (1 + this.octave));
+    return this.note+(octavebase * (1 + this.octave));
   }
 
   // Converts MIDI keynum to note value
@@ -208,6 +214,16 @@ class MusicGridState {
           this.current_tonic = current_tonic;
           this.currentgridmap = currentgridmap;
   }
+
+  //loop through list, return active cells and associated mech/alchemy data
+  iterateGrid(keynum: number) : number {
+    return keynum % octavebase;
+  }
+
+  detectAlchemy(keynum: number) : number {
+    return keynum % octavebase;
+  }
+
 }
 
 /************************************************************************************************************************
@@ -223,31 +239,27 @@ class MusicGridState {
 //Compute and Return notes of mode at note base - note base is omitted
 
 export function mode_notes_above_note_base(pitchbase: number, mode: Array<number>) { 
- // var notes: Array<number>;
- var summ:number = 0; 
+ 
+ var step_sum:number = 0; 
  var notes:number[] = new Array(mode.length)  
 
  for(var i = 0;i<notes.length;i++) { 
-  summ=summ+mode[i];
-   notes[i] = pitchbase +summ;
-    console.log(notes[i]) 
-
+  step_sum=step_sum+mode[i];
+    notes[i] = pitchbase +step_sum;
  }
   return notes; 
-
 }
 
 export function get_notes_of_key(pc: PitchClass, mode: Array<number>) { 
-  // var notes: Array<number>;
-  var summ:number = 0; 
+  
+  var step_sum:number = 0; 
   var notes:number[] = new Array(mode.length+1)  
   notes[0] = pc.note;
-  for(var i = 0;i<notes.length;i++) { 
-   summ=summ+mode[i];
-    notes[i+1] = (pc.note + summ) % 12;
-     console.log(notes[i]) 
- 
-  }
+  
+  for(var i = 0;i < mode.length;i++) { 
+    step_sum=step_sum+mode[i];
+      notes[i+1] = (pc.note + step_sum) % 12; 
+    }
    return notes; 
  }
 
@@ -384,3 +396,24 @@ export function bi_modaltransposition(keynum: number, num_steps: number, tonic: 
 
    return keynum + num_steps; 
  }
+
+
+//**********************************************************************************************************
+    Quick Testing
+
+    let pc = new PitchClass(9,4);
+    let tonic = new PitchClass(0,4);
+   
+    console.log('mode_notes_above_note_base: ' + (mode_notes_above_note_base(69, major_steps ))); 
+    console.log('pc_to_keynum: ' + pc.pcToKeynum()); 
+    console.log('keynumToNote: ' + pc.keynumToNote(69)); 
+    console.log('keynumToPitchClass -> note: ' + keynumToPitchClass(69).note); 
+    console.log('get_notes_of_key: ' + get_notes_of_key(pc, major_steps)); 
+    console.log('get_scale_degree: ' + get_scale_degree(pc, tonic, major_steps)); 
+    console.log('keynum_to_scale_degree: ' + keynum_to_scale_degree(69, tonic, major_steps)); 
+    console.log('num_steps_from_scale_degree: ' + num_steps_from_scale_degree(0, 4, tonic, major_steps)); 
+    console.log('modaltransposition: ' + modaltransposition(69, 4, tonic, major_steps)); 
+//***********************************************************************************************************/
+
+
+
