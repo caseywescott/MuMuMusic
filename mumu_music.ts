@@ -261,64 +261,6 @@ export function keynum_to_scale_degree(keynum: number, tonic: PitchClass, mode: 
    return index; 
  }
 
-// Calculates for both positive modal steps from a given scale degree by iterating through a reversed mode array
-
-export function num_steps_from_scale_degree_positive(scale_degree: number, num_steps: number, tonic: PitchClass, mode: Array<number>) { 
-  
-  var sum:number = 0; 
-
-  for(var i = 0; i < num_steps; i++) { 
-
-    var currentstep = (scale_degree + i) % mode.length;
-    sum = sum + mode[currentstep];
-    console.log(sum);
-   }
-
-   return sum; 
- }
-
-// Calculates for both negative modal steps from a given scale degree by iterating through a reversed mode array
-
-export function num_steps_from_scale_degree_down(scale_degree: number, num_steps: number, tonic: PitchClass, mode: Array<number>) { 
-  
-  var sum:number = 0; 
-  var index:number = 0;
-  
-  for(var i = 0; i < num_steps; i++) { 
-    var unmodded_idx = scale_degree - i;
-
-    if (unmodded_idx < 0) 
-{
-  index = mode.length-1;
-} else{
-  index = unmodded_idx;
-}
-
-    sum = sum + mode[index];
-    console.log(sum);
-   }
-
-   return sum; 
- }
-
-// Calculates for both negative modal steps from a given scale degree by iterating through a reversed mode array
-
-export function num_steps_from_scale_degree_down2(scale_degree: number, num_steps: number, tonic: PitchClass, mode: Array<number>) { 
-  
-  var sum:number = 0; 
-  var index:number = 0;
-  var reverse_mode:number[] = mode.reverse();
-  var inverted_scale_degree =  mode.length - 1 - (Math.abs(scale_degree) % mode.length);
-
-  for(var i = 0; i < num_steps; i++) { 
-    var currentstep = (inverted_scale_degree + i) % mode.length;
-    sum = sum + reverse_mode[currentstep];
-    console.log(sum);
-   }
-
-   return sum; 
- }
-
  // Calculates for both + & - modal steps from a given scale degree
 
  export function num_steps_from_scale_degree(scale_degree: number, num_steps: number, tonic: PitchClass, mode: Array<number>) { 
