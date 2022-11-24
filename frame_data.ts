@@ -70,4 +70,31 @@ console.log(frames[0].mechs)
 
 /*
 Loop through a frame, and access notes from 'FretBoard'
+The Code below is currently running in the MIDI player
+*/
+
+/*
+for (var i = 0; i < 100; i++) {
+      for (var j = 0; j < frames[i].mechs.length; j++) {
+  
+        //Get Grid Dimensions for each mech
+        // J = mech id
+        
+        //index into fretboard grid
+       var x_idx = frames[i].mechs[j].index.x
+       var y_idx = frames[i].mechs[j].index.y
+
+       var mech_id = parseInt(
+        frames[i].mechs[j].id
+        )
+        console.log("mech_id")
+        console.log(mech_id)
+       var fretvals = guqin_grid_notes[x_idx][y_idx]
+
+       const note = createNote2(rootStore)(
+        (960/2)*i,
+        fretvals+36+(12*j),
+        80,
+        960/2
+      )
 */
