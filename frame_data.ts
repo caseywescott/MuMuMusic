@@ -1,4 +1,4 @@
-import { arrayRotate, cycle_of_fifths_modes, get_chords_at_idx, lighter_to_dark_modes, lighter_to_dark_modes_arr, lydian_steps_arr, modaltransposition, num_steps_from_scale_degree, PitchClass } from "./mumu_music";
+import { get_chords_at_idx, modaltransposition, modes, num_steps_from_scale_degree, PitchClass } from "./mumu_music";
 import AtomState, { AtomType } from "./types/AtomState";
 import Frame from "./types/Frame";
 import Grid from "./types/Grid";
@@ -28,13 +28,9 @@ atomt[1] = AtomType.HAZELNUT
 
 // Create Grid & Mechs for Frame Data
 for (var i = 0; i < simulation_steps; i++) {
-
 for (var j = 0; j < mech_grid_paths.length; j++) {
 
   var idx = i % mech_grid_paths[j].length
-
-  //console.log (mech_grid_paths[j][i][0]);
-  //console.log (mech_grid_paths[j][i][1]);
 
   let gridvals: Grid = {
     x: mech_grid_paths[j][idx][0],
@@ -71,3 +67,7 @@ frames[i] = frameval
 
 console.log(frames.length)
 console.log(frames[0].mechs)
+
+/*
+Loop through a frame, and access notes from 'FretBoard'
+*/
