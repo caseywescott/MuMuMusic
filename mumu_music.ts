@@ -84,7 +84,7 @@ lighter_to_dark_modes.locrian = modes.locrian
  Current PitchClass map for the 7X7 Matrix grid emulating Guqin Fretboard. Ultimately these will be recomputed by formulas to reduce transposistions/computations
 */
 
-var guqin_grid_notes = [
+export var guqin_grid_notes = [
   [0, 2, 5, 7, 9, 12, 14, 12],
   [2, 5, 7, 9, 12, 14, 12, 0],
   [5, 7, 9, 12, 14, 12, 0, 2],
@@ -207,15 +207,21 @@ export function keynumToPitchClass(keynum: number) {
   return pc
 }
 
-class PitchCollection {
-  name: string
-  steps: Array<number>
+/*
+ FretBoard - PitchClass Map for Grid 
+*/
 
-  constructor(name: string, steps: Array<number>) {
+class FretBoard {
+  name: string
+  frets: number[][]
+
+  constructor(name: string, steps: number[][]) {
     this.name = name
-    this.steps = steps
+    this.frets = steps
   }
 }
+
+export var fretboard1 = new FretBoard("guqin_grid_notes", guqin_grid_notes)
 
 /*
  MusicGridState - Manages musical attributes modulated by formulas. 
