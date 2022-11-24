@@ -1,27 +1,73 @@
-import { cycle_of_fifths_modes, get_chords_at_idx, lighter_to_dark_modes, lighter_to_dark_modes_arr, lydian_steps_arr, modaltransposition, num_steps_from_scale_degree, PitchClass } from "./mumu_music";
+import { arrayRotate, cycle_of_fifths_modes, get_chords_at_idx, lighter_to_dark_modes, lighter_to_dark_modes_arr, lydian_steps_arr, modaltransposition, num_steps_from_scale_degree, PitchClass } from "./mumu_music";
+import AtomState, { AtomType } from "./types/AtomState";
+import Frame from "./types/Frame";
 import Grid from "./types/Grid";
 import MechState, { MechStatus, MechType } from "./types/MechState";
+
+/*
+BUILD TEST DATA SIMULATING DEMO 01
+*/
+
+// Create Mech Trajectories - Each X,Y pair corresponds to Frame Data
+
+var simulation_steps = 100
 
 var mech1_grid_path = [[3,3],[4,3], [4,4], [3,4]]
 var mech2_grid_path = [[5,5],[5,6], [5,7], [6,7], [7,7], [7,6], [7,5], [6,5]]
 var mech_grid_paths = [mech1_grid_path, mech2_grid_path]
 
-  let grids = []
-  let mech_states = []
+var frames: Frame[] = [];
+var atoms: AtomState[] = [];
+var mech_states: MechState[] = [];
 
-  for (var i = 0; i < mech1_grid_path.length; i++) {
-    let gridvals: Grid = {
-        x: mech1_grid_path[i][0] ,
-        y: mech1_grid_path[i][i] ,
-      };
-      grids[i] = gridvals
+// delivered_accumulated array - Dummy Data for Now
 
-      let m: MechState = {
-        id: "mech"+(i+1),
-        typ: MechType.SINGLETON,
-        status: MechStatus.OPEN,
-        index: gridvals,
-        pc_next: 0
-      };
-      mech_states[i] = m
-  }
+var atomt: AtomType[] = [];
+atomt[0] = AtomType.VANILLA
+atomt[1] = AtomType.HAZELNUT
+
+// Create Grid & Mechs for Frame Data
+for (var i = 0; i < simulation_steps; i++) {
+
+for (var j = 0; j < mech_grid_paths.length; j++) {
+
+  var idx = i % mech_grid_paths[j].length
+
+  //console.log (mech_grid_paths[j][i][0]);
+  //console.log (mech_grid_paths[j][i][1]);
+
+  let gridvals: Grid = {
+    x: mech_grid_paths[j][idx][0],
+    y: mech_grid_paths[j][idx][1],
+  };
+
+  let mechstatevals: MechState = {
+    id: "mech"+(j+1),
+    typ: MechType.SINGLETON,
+    status: MechStatus.OPEN,
+    index: gridvals,
+    pc_next: i
+  };
+
+  mech_states[j] = mechstatevals
+}
+
+// map for grid_populated_bools
+
+var bools: { [name: string]: boolean } = {}
+bools.test = true
+
+let frameval: Frame = {
+  mechs: [...mech_states],
+  atoms: atoms,
+  grid_populated_bools: bools,
+  delivered_accumulated: atomt,
+  cost_accumulated: 0,
+  notes: ""
+};
+
+frames[i] = frameval
+}
+
+console.log(frames.length)
+console.log(frames[0].mechs)
