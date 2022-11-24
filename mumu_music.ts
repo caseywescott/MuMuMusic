@@ -17,44 +17,8 @@ export const octavebase: number = 12
  Lydian, Pentatonic and Dorian would be great choices
 */
 
-export var lydian_steps_arr = [2, 2, 2, 1, 2, 2, 1] // No avoid notes
-export var major_steps_arr = [2, 2, 1, 2, 2, 2, 1] //avoid notes scale degree 3
-export var mixolydian_steps_arr = [2, 2, 1, 2, 2, 1, 2] //avoid notes scale degree 3
-export var dorian_steps_arr = [2, 1, 2, 2, 2, 1, 2] //avoid notes scale degree 5 but modern ears usually like it
-export var aeolian_steps_arr = [2, 1, 2, 2, 2, 2, 2] // avoid notes scale degree 5
-export var phrygian_steps_arr = [1, 2, 2, 2, 1, 2, 2] // avoid notes scale degree 1 & 5
-export var locrian_steps_arr = [1, 2, 2, 1, 2, 2, 2] // avoid notes scale degree 1
-
-export var mixolydian_plus_11_arr = [2, 2, 2, 1, 2, 1, 2] //no avoid notes
-export var melodicminor_arr = [2, 1, 2, 2, 2, 2, 1] //no avoid notes
-export var harmonicminor_arr = [2, 1, 2, 2, 1, 3, 1]
-export var naturalminor_arr = [2, 1, 2, 2, 2, 2, 2]
-export var chromatic_arr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-export var pentatonic_arr = [2, 2, 3, 2, 3] // No avoid notes
-
 /*
-Mapped version of modes
-*/
-
-export var mode_dict = new Map<string, number[]>()
-
-mode_dict.set("major", [2, 2, 1, 2, 2, 2, 1])
-mode_dict.set("mixolydian", mixolydian_steps_arr)
-mode_dict.set("dorian", dorian_steps_arr)
-mode_dict.set("aeolian", aeolian_steps_arr)
-mode_dict.set("phrygian", phrygian_steps_arr)
-mode_dict.set("locrian", locrian_steps_arr)
-mode_dict.set("lydian", lydian_steps_arr)
-
-mode_dict.set("mixolydian_plus_11", mixolydian_plus_11_arr)
-mode_dict.set("melodicminor", melodicminor_arr)
-mode_dict.set("harmonicminor", harmonicminor_arr)
-mode_dict.set("naturalminor", naturalminor_arr)
-mode_dict.set("chromatic", chromatic_arr)
-mode_dict.set("pentatonic", pentatonic_arr)
-
-/*
-String Indexes Mapping
+Modes - String Indexed Mapping
 */
 
 export const modes: { [name: string]: number[] } = {}
@@ -89,17 +53,20 @@ cycle_of_fifths_modes.lydian = modes.lydian
  https://guitarchitecture.org/2011/10/02/the-guitarchitect%E2%80%99s-guide-to-modes-part-the-circle-of-5ths-modal-interchange-and-making-the-most-of-one-pattern/
 */
 
-// index chords from light to dark 0 - bright 7, arr.length dark
+/*
+ Modes sorted by lighter to dark quality
+ Indexed 0-7 ; Equal to grid dimensions
+*/
 
 export var light_to_dark_mode_arr = [
-  pentatonic_arr,
-  lydian_steps_arr,
-  major_steps_arr,
-  mixolydian_plus_11_arr,
-  dorian_steps_arr,
-  aeolian_steps_arr,
-  phrygian_steps_arr,
-  locrian_steps_arr, //could swap with melodic minor
+  modes.pentatonic,
+  modes.lydian,
+  modes.major,
+  modes.mixolydian_plus_11,
+  modes.dorian,
+  modes.aeolian,
+  modes.phrygian,
+  modes.locrian, //could swap with melodic minor
 ] 
 
 export let lighter_to_dark_modes: { [name: string]: number[] } = {}
@@ -111,22 +78,6 @@ lighter_to_dark_modes.dorian = modes.dorian
 lighter_to_dark_modes.aeolian = modes.aeolian
 lighter_to_dark_modes.phrygian = modes.phrygian
 lighter_to_dark_modes.locrian = modes.locrian
-
-/*
- Modes sorted by lighter to dark quality
- Indexed 0-7 ; Equal to grid dimensions
-*/
-
-export var lighter_to_dark_modes_arr = [
-  modes.pentatonic, 
-  modes.lydian, 
-  modes.major, 
-  modes.mixolydian_plus_11, 
-  modes.dorian, 
-  modes.aeolian, 
-  modes.phrygian, 
-  modes.locrian
-] 
 
 
 /*
@@ -143,6 +94,16 @@ var guqin_grid_notes = [
   [14, 12, 0, 2, 5, 7, 9, 12],
   [12, 0, 2, 5, 7, 9, 12, 14],
 ]
+
+// useful for computing fretboards
+
+export function arrayRotate(arr: number[], reverse: number) {
+  var copy =  arr;
+  var val = copy[0]
+  var x = copy.shift();
+  var y = copy.push(val);
+  return copy;
+}
 
 /*
  To select chord progressions that sound good, select from any 6 adjacent cells of the chord_map below. To modulate keys safely, rotate 6 adjacent cells along the cells columns. 
@@ -386,7 +347,6 @@ export function num_steps_from_scale_degree(
   return sum
 }
 
-// 
 export function modaltransposition(
   keynum: number,
   num_steps: number,
@@ -412,38 +372,4 @@ export function modaltransposition(
  Functions to calculate transposition of a PitchClass from (tonic+mode) to a (tonic+mode) 
  Useful for changing keys when certain alchemy events occur
 */
-
-export function bi_modaltransposition(
-  keynum: number,
-  num_steps: number,
-  tonic: PitchClass,
-  mode: Array<number>
-) {
-  var scale_degree: number = keynum_to_scale_degree(keynum, tonic, mode)
-  var num_steps: number = num_steps_from_scale_degree(
-    scale_degree,
-    num_steps,
-    tonic,
-    mode
-  )
-
-  return keynum + num_steps
-}
-
-export function modulatePitchClass(
-  keynum: number,
-  num_steps: number,
-  tonic: PitchClass,
-  mode: Array<number>
-) {
-  var scale_degree: number = keynum_to_scale_degree(keynum, tonic, mode)
-  var num_steps: number = num_steps_from_scale_degree(
-    scale_degree,
-    num_steps,
-    tonic,
-    mode
-  )
-
-  return keynum + num_steps
-}
 
