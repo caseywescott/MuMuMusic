@@ -9,7 +9,7 @@ When Mech's traverse the grid, musicals notes are selected.
 Arguments: 
 
     Name 
-    String Steps - Specify Number of modal steps between each open string note for N zither strings (Violins/Guitars are tuned to fourths)
+    String Steps - Specify Number of modal steps between each open string note for 'j' frets and 'i' zither strings (Violins/Guitars are tuned to fourths)
     Num_Frets - Number of Frets to generate. For MuMu, Num_Frets == 7
     Scaledegree - The scaledegree of a given tonic/mode to build the fretboard
     Tonic - Pitch base of the tuning
@@ -46,6 +46,7 @@ export class FretBoard {
   }
   
   calculateFrets(): number[][] {
+      
     var notearr =  Array()   
 
     for (var j = 0; j < this.num_frets; j++) {
@@ -57,7 +58,7 @@ export class FretBoard {
     for (var i = 0; i < this.string_steps.length; i++) {
       step_sum = step_sum + this.string_steps[i] 
   
-      var current_note = this.tonic.modalTransposition(this.scale_degree+j, this.tonic, this.mode)
+      var current_note = this.tonic.modalTransposition(this.scale_degree + j, this.tonic, this.mode)
 
       var total_steps: number = num_steps_from_scale_degree(
         this.scale_degree+j, //increment scale degree for the jth fret
