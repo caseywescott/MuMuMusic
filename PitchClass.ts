@@ -36,9 +36,7 @@ export class PitchClass {
   }
 
   scaleDegree( tonic: PitchClass, mode: number[]): number {
-
     var key_arr: number[] = get_notes_of_key(tonic, mode)
-
     return key_arr.indexOf(this.note) 
   }
 
@@ -70,7 +68,7 @@ export class PitchClass {
       tonic,
       mode
     )
-
+    
     return keynumToPitchClass(keyn + total_steps)
   }
 
@@ -135,7 +133,7 @@ export function get_notes_of_key(pc: PitchClass, mode: Array<number>) {
   
 /* 
  Returns the scale degree of a note, given a tonic and mode (-1 if not found)
- In this implementation, Scale degrees use zero-based counting, unlike in prevalent music theory literature 
+ In this implementation, Scale degrees use zero-based counting, unlike prevalent music theory literature 
 */
   
 export function get_scale_degree(
