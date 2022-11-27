@@ -1,8 +1,8 @@
 /* 
  CHORDS
- To create chord progressions that sound good, select from any 6 adjacent cells of the chord_map below. 
+ To create chord progressions that sound good, select from any 6 adjacent cells from the chord_map below. 
  
- To modulate keys safely, rotate 6 adjacent cells along the cells columns. 
+ To modulate keys safely, rotate 6 adjacent cell sets along the cells columns. 
 
  Increasing the distance between cell sets (max-distance = 6) increased the harmonic distance.
 
