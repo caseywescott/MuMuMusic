@@ -3,8 +3,8 @@ import { keynumToPitchClass, num_steps_from_scale_degree, PitchClass } from "./P
 /* 
 This function calculates the notes of any zither/guitar FretBoard for N Strings in any Tuning:
 
-We can use this to calculate Calculate a PitchClass Matrix (AKA FretBoard) where only notes contained in a specified mode can be played. 
-When Mech's traverse the grid, musicals notes are selected.
+We can use this to calculate a PitchClass Matrix (AKA FretBoard) where only notes contained in a specified mode can be played. 
+Thid enables Mech's traversing the grid to map to musicals notes.
 
 Arguments: 
 
@@ -20,7 +20,7 @@ EG: Standard Guitar Tuning:
 
 EG: Standard Guqin Tuning: 
     F Pentatonic with string steps: [0, 1, 1, 1, 1, 1, 1], beginning at scale degree 3:
-    C - D - F - G - A - C - D (Seventh String Added to match grid dimensions)
+    C - D - F - G - A - C - D (Seventh String added to match grid dimensions)
 */
 
 // double check that PC to Keynum and Keynum to PC functions return the correct octave
@@ -41,7 +41,9 @@ export class FretBoard {
     this.mode = mode  
     this.frets = []    
   }
-
+    
+  // i values corresponds to zither strings, j  values corresponds to zither frets
+    
   calculateFrets(): number[][] {
     var notearr =  Array()   
 
@@ -49,12 +51,12 @@ export class FretBoard {
       var step_sum: number = 0
       var notes: number[] = [] 
        
-    // calculate and assign values for each j fret
+    // calculate and assign values for each fret
 
     for (var i = 0; i < this.string_steps.length; i++) {
       step_sum = step_sum + this.string_steps[i] 
   
-      var current_note = keynumToPitchClass(this.tonic.modalTransposition(this.scaledegree+j, this.tonic, this.mode))
+      var current_note = this.tonic.modalTranspositionPC(this.scaledegree+j, this.tonic, this.mode)
 
       var total_steps: number = num_steps_from_scale_degree(
         this.scaledegree+j, //increment scale degree for the jth fret
