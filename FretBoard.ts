@@ -10,18 +10,18 @@ Arguments:
 
     Name 
     String Steps - Specify Number of modal steps between each open string note for 'j' frets and 'i' zither strings (Violins/Guitars are tuned to fourths)
-    Num_Frets - Number of Frets to generate. For MuMu, Num_Frets == 7
+    Num_Frets - Number of Frets to generate. For MuMu, Num_Frets == 8
     Scaledegree - The scaledegree of a given tonic/mode to build the fretboard
     Tonic - Pitch base of the tuning
     Mode - Mode used to tune Frets and steps to increment fret values
 
 EG: Standard Guitar Tuning: 
-    E Dorian with string steps: [0, 3, 3, 3, 2, 3, 2], beginning at scale degree 0:
-    E - A - D - G - B - E (G) (Seventh String Added for the grid.)
+    E Dorian with string steps: [0, 3, 3, 3, 2, 3, (2, 2)], beginning at scale degree 0:
+    E - A - D - G - B - E (G) - (B) (Seventh String Added for the grid.)
 
 EG: Standard Guqin Tuning: 
-    F Pentatonic with string steps: [0, 1, 1, 1, 1, 1, 1], beginning at scale degree 3:
-    C - D - F - G - A - C - D (Seventh String Added to match grid dimensions)
+    F Pentatonic with string steps: [0, 1, 1, 1, 1, 1, 1, (1)], beginning at scale degree 3:
+    C - D - F - G - A - C - D - F (Seventh String Added to match grid dimensions)
 */
 
 export class FretBoard {
