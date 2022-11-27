@@ -24,8 +24,6 @@ EG: Standard Guqin Tuning:
     C - D - F - G - A - C - D (Seventh String Added to match grid dimensions)
 */
 
-// double check that PC to Keynum and Keynum to PC functions return the correct octave
-
 export class FretBoard {
   name: string
   string_steps: number[]
